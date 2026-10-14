@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IT socials · connect via stack</title>
+  <!-- Font Awesome 6 (free) for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Google Fonts: JetBrains Mono (monospace for IT feel) + Inter for fallback -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'JetBrains Mono', 'Inter', monospace;
+      background: #0a0c10;
+      background-image: 
+        radial-gradient(circle at 15% 20%, rgba(0, 255, 180, 0.06) 0%, transparent 35%),
+        radial-gradient(circle at 85% 70%, rgba(0, 180, 255, 0.06) 0%, transparent 40%),
+        linear-gradient(135deg, #0b0e14 0%, #10141e 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      margin: 0;
+      color: #e2e8f0;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* matrix-style subtle overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(0, 255, 170, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 170, 0.02) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* scanline effect */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.08),
+        rgba(0, 0, 0, 0.08) 1px,
+        transparent 1px,
+        transparent 3px
+      );
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    .landing {
+      max-width: 1100px;
+      width: 100%;
+      background: rgba(15, 20, 28, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 1.5rem;
+      padding: 2.5rem 2rem;
+      border: 1px solid rgba(0, 255, 180, 0.15);
+      box-shadow: 
+        0 0 0 1px rgba(0, 255, 180, 0.05),
+        0 25px 50px -12px rgba(0, 0, 0, 0.8),
+        0 0 80px -20px rgba(0, 255, 180, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.03);
+      position: relative;
+      z-index: 1;
+      transition: all 0.3s ease;
+    }
+
+    /* corner brackets (IT HUD feel) */
+    .landing::before,
+    .landing::after {
+      content: '';
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      border-color: #00ffb4;
+      border-style: solid;
+      opacity: 0.5;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    .landing::before {
+      top: 12px;
+      left: 12px;
+      border-width: 2px 0 0 2px;
+    }
+
+    .landing::after {
+      bottom: 12px;
+      right: 12px;
+      border-width: 0 2px 2px 0;
+    }
+
+    .landing:hover::before,
+    .landing:hover::after {
+      opacity: 1;
+    }
+
+    /* header / brand */
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(0, 255, 180, 0.1);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 700;
+      font-size: 1.5rem;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .logo i {
+      background: linear-gradient(135deg, #00ffb4, #00b4ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-size: 2rem;
+      filter: drop-shadow(0 0 8px rgba(0, 255, 180, 0.5));
+    }
+
+    .logo span {
+      background: linear-gradient(135deg, #ffffff, #cbd5e1);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .logo .cursor {
+      display: inline-block;
+      width: 3px;
+      height: 1.2em;
+      background: #00ffb4;
+      margin-left: 4px;
+      animation: blink 1s step-end infinite;
+      vertical-align: text-bottom;
+      box-shadow: 0 0 8px #00ffb4;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .badge {
+      background: rgba(0, 255, 180, 0.08);
+      backdrop-filter: blur(4px);
+      padding: 0.5rem 1.25rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #00ffb4;
+      border: 1px solid rgba(0, 255, 180, 0.25);
+      box-shadow: 0 0 20px -5px rgba(0, 255, 180, 0.2);
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.02em;
+    }
+
+    .badge i {
+      margin-right: 6px;
+      color: #00ffb4;
+      font-size: 0.75rem;
+    }
+
+    /* hero text */
+    .hero {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(1.8rem, 5vw, 3.2rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      color: #ffffff;
+      margin-bottom: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, #00ffb4, #00b4ff, #a855f7);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 0 15px rgba(0, 255, 180, 0.3));
+    }
+
+    .hero p {
+      font-size: 1.05rem;
+      color: #94a3b8;
+      max-width: 600px;
+      margin: 0 auto;
+      font-weight: 400;
+      line-height: 1.7;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: -0.01em;
+    }
+
+    .hero p .highlight {
+      color: #00ffb4;
+      background: rgba(0, 255, 180, 0.08);
+      padding: 0.1em 0.4em;
+      border-radius: 4px;
+      border: 1px solid rgba(0, 255, 180, 0.15);
+    }
+
+    /* social grid */
+    .social-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+      margin: 3rem 0 2rem;
+    }
+
+    /* card style - IT / terminal */
+    .social-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 1.8rem 1rem;
+      background: rgba(20, 28, 38, 0.9);
+      border-radius: 12px;
+      text-decoration: none;
+      color: #e2e8f0;
+      transition: all 0.25s cubic-bezier(0.2, 0, 0, 1);
+      border: 1px solid rgba(0, 255, 180, 0.12);
+      box-shadow: 
+        0 4px 12px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.03);
+      position: relative;
+      overflow: hidden;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* top-left corner accent */
+    .social-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 20px;
+      height: 20px;
+      border-top: 2px solid #00ffb4;
+      border-left: 2px solid #00ffb4;
+      opacity: 0.4;
+      transition: opacity 0.3s, width 0.3s, height 0.3s;
+    }
+
+    .social-card:hover::before {
+      opacity: 1;
+      width: 30px;
+      height: 30px;
+    }
+
+    /* bottom-right corner accent */
+    .social-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 20px;
+      height: 20px;
+      border-bottom: 2px solid #00ffb4;
+      border-right: 2px solid #00ffb4;
+      opacity: 0.4;
+      transition: opacity 0.3s, width 0.3s, height 0.3s;
+    }
+
+    .social-card:hover::after {
+      opacity: 1;
+      width: 30px;
+      height: 30px;
+    }
+
+    .social-card:hover {
+      transform: translateY(-6px);
+      background: rgba(25, 35, 48, 0.95);
+      border-color: rgba(0, 255, 180, 0.4);
+      box-shadow: 
+        0 20px 38px -12px rgba(0, 0, 0, 0.6),
+        0 0 30px -10px rgba(0, 255, 180, 0.3),
+        inset 0 1px 0 rgba(0, 255, 180, 0.1);
+    }
+
+    /* brand-specific hover glows */
+    .social-card.instagram:hover { 
+      box-shadow: 0 20px 38px -12px rgba(0,0,0,0.6), 0 0 30px -8px rgba(225, 48, 108, 0.4), inset 0 1px 0 rgba(225, 48, 108, 0.15);
+      border-color: rgba(225, 48, 108, 0.5);
+    }
+    .social-card.instagram:hover::before,
+    .social-card.instagram:hover::after { border-color: #e1306c; }
+
+    .social-card.twitter:hover { 
+      box-shadow: 0 20px 38px -12px rgba(0,0,0,0.6), 0 0 30px -8px rgba(29, 161, 242, 0.4), inset 0 1px 0 rgba(29, 161, 242, 0.15);
+      border-color: rgba(29, 161, 242, 0.5);
+    }
+    .social-card.twitter:hover::before,
+    .social-card.twitter:hover::after { border-color: #1da1f2; }
+
+    .social-card.linkedin:hover { 
+      box-shadow: 0 20px 38px -12px rgba(0,0,0,0.6), 0 0 30px -8px rgba(10, 102, 194, 0.4), inset 0 1px 0 rgba(10, 102, 194, 0.15);
+      border-color: rgba(10, 102, 194, 0.5);
+    }
+    .social-card.linkedin:hover::before,
+    .social-card.linkedin:hover::after { border-color: #0a66c2; }
+
+    .social-card.github:hover { 
+      box-shadow: 0 20px 38px -12px rgba(0,0,0,0.6), 0 0 30px -8px rgba(255, 255, 255, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+    .social-card.github:hover::before,
+    .social-card.github:hover::after { border-color: #ffffff; }
+
+    .social-card.youtube:hover { 
+      box-shadow: 0 20px 38px -12px rgba(0,0,0,0.6), 0 0 30px -8px rgba(255, 0, 0, 0.35), inset 0 1px 0 rgba(255, 0, 0, 0.15);
+      border-color: rgba(255, 0, 0, 0.5);
+    }
+    .social-card.youtube:hover::before,
+    .social-card.youtube:hover::after { border-color: #ff0000; }
+
+    .social-card.tiktok:hover { 
+      box-shadow: 0 20px 38px -12px rgba(0,0,0,0.6), 0 0 30px -8px rgba(0, 255, 255, 0.3), inset 0 1px 0 rgba(0, 255, 255, 0.1);
+      border-color: rgba(0, 255, 255, 0.4);
+    }
+    .social-card.tiktok:hover::before,
+    .social-card.tiktok:hover::after { border-color: #00ffff; }
+
+    .social-icon {
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
+      transition: transform 0.2s ease, filter 0.2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 64px;
+      height: 64px;
+      border-radius: 10px;
+      background: rgba(10, 15, 20, 0.8);
+      border: 1px solid rgba(0, 255, 180, 0.15);
+      position: relative;
+      box-shadow: inset 0 0 20px -10px rgba(0, 255, 180, 0.2);
+    }
+
+    /* subtle inner glow on icons */
+    .social-icon::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 10px;
+      background: radial-gradient(circle at 30% 30%, rgba(0, 255, 180, 0.1), transparent 70%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .social-card:hover .social-icon::after {
+      opacity: 1;
+    }
+
+    .social-icon i {
+      font-size: 1.6rem;
+      transition: transform 0.2s ease;
+      position: relative;
+      z-index: 1;
+    }
+
+    .social-card:hover .social-icon i {
+      transform: scale(1.15);
+    }
+
+    /* icon colors */
+    .social-card.instagram .social-icon i { color: #e1306c; filter: drop-shadow(0 0 6px rgba(225, 48, 108, 0.4)); }
+    .social-card.twitter .social-icon i { color: #1da1f2; filter: drop-shadow(0 0 6px rgba(29, 161, 242, 0.4)); }
+    .social-card.linkedin .social-icon i { color: #0a66c2; filter: drop-shadow(0 0 6px rgba(10, 102, 194, 0.4)); }
+    .social-card.github .social-icon i { color: #ffffff; filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.3)); }
+    .social-card.youtube .social-icon i { color: #ff0000; filter: drop-shadow(0 0 6px rgba(255, 0, 0, 0.4)); }
+    .social-card.tiktok .social-icon i { color: #00ffff; filter: drop-shadow(0 0 6px rgba(0, 255, 255, 0.4)); }
+
+    .social-name {
+      font-weight: 600;
+      font-size: 1rem;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.3rem;
+      color: #ffffff;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .social-handle {
+      font-size: 0.75rem;
+      color: #64748b;
+      font-weight: 400;
+      word-break: break-word;
+      max-width: 100%;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.02em;
+    }
+
+    /* extra cta section */
+    .cta-section {
+      text-align: center;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(0, 255, 180, 0.1);
+    }
+
+    .cta-section p {
+      font-size: 0.9rem;
+      color: #94a3b8;
+      margin-bottom: 1.25rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .cta-section p::before {
+      content: '> ';
+      color: #00ffb4;
+      font-weight: 600;
+    }
+
+    .email-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: rgba(0, 255, 180, 0.08);
+      color: #00ffb4;
+      text-decoration: none;
+      padding: 0.9rem 2rem;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: all 0.25s;
+      box-shadow: 0 0 20px -8px rgba(0, 255, 180, 0.2);
+      border: 1px solid rgba(0, 255, 180, 0.3);
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.02em;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .email-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 255, 180, 0.1), transparent);
+      transition: left 0.5s;
+    }
+
+    .email-btn:hover::before {
+      left: 100%;
+    }
+
+    .email-btn i {
+      font-size: 1rem;
+      transition: transform 0.2s;
+    }
+
+    .email-btn:hover {
+      background: rgba(0, 255, 180, 0.15);
+      border-color: rgba(0, 255, 180, 0.6);
+      box-shadow: 0 0 30px -8px rgba(0, 255, 180, 0.4);
+      color: #ffffff;
+    }
+
+    .email-btn:hover i {
+      transform: translateX(4px);
+    }
+
+    /* footer / meta */
+    .meta {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+      flex-wrap: wrap;
+      font-size: 0.7rem;
+      color: #475569;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .meta a {
+      color: #64748b;
+      text-decoration: none;
+      transition: color 0.2s;
+      position: relative;
+    }
+
+    .meta a:hover {
+      color: #00ffb4;
+    }
+
+    .meta a::before {
+      content: '[';
+      opacity: 0;
+      margin-right: 2px;
+      transition: opacity 0.2s;
+      color: #00ffb4;
+    }
+
+    .meta a::after {
+      content: ']';
+      opacity: 0;
+      margin-left: 2px;
+      transition: opacity 0.2s;
+      color: #00ffb4;
+    }
+
+    .meta a:hover::before,
+    .meta a:hover::after {
+      opacity: 1;
+    }
+
+    /* responsiveness */
+    @media (max-width: 600px) {
+      .landing {
+        padding: 1.8rem 1.2rem;
+        border-radius: 1.2rem;
+      }
+
+      .brand {
+        justify-content: center;
+        text-align: center;
+      }
+
+      .badge {
+        font-size: 0.7rem;
+        padding: 0.4rem 1rem;
+      }
+
+      .hero p {
+        font-size: 0.9rem;
+      }
+
+      .social-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.8rem;
+      }
+
+      .social-card {
+        padding: 1.4rem 0.5rem;
+        border-radius: 10px;
+      }
+
+      .social-icon {
+        width: 52px;
+        height: 52px;
+      }
+
+      .social-icon i {
+        font-size: 1.3rem;
+      }
+
+      .social-name {
+        font-size: 0.85rem;
+      }
+
+      .social-handle {
+        font-size: 0.65rem;
+      }
+
+      .email-btn {
+        padding: 0.7rem 1.5rem;
+        font-size: 0.85rem;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .social-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* selection color */
+    ::selection {
+      background: rgba(0, 255, 180, 0.3);
+      color: #ffffff;
+    }
+
+    /* scrollbar styling */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0a0c10;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e2a3a;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #00ffb4;
+    }
+  </style>
+</head>
+<body>
+  <main class="landing">
+    <!-- header with logo & badge -->
+    <div class="brand">
+      <div class="logo">
+        <i class="fas fa-terminal"></i>
+        <span>socials</span><span class="cursor"></span>
+      </div>
+      <div class="badge">
+        <i class="fas fa-shield-halved"></i> SSH · CONNECT
+      </div>
+    </div>
+
+    <!-- hero message -->
+    <div class="hero">
+      <h1>Let's <span>connect</span> everywhere</h1>
+      <p>Find us on your favourite platforms — <span class="highlight">ping</span> us, <span class="highlight">fork</span> our repos, or just say <span class="highlight">hello</span>.</p>
+    </div>
+
+    <!-- social cards grid (auto-generated) -->
+    <div class="social-grid" id="socialGrid"></div>
+
+    <!-- CTA: email / contact (auto-generated) -->
+    <div class="cta-section">
+      <p>Prefer email? Drop us a message.</p>
+      <a href="#" class="email-btn" id="emailBtn">
+        <i class="fas fa-paper-plane"></i> <span id="emailText">hello@socials.example</span>
+      </a>
+    </div>
+
+    <!-- small footer / meta -->
+    <div class="meta">
+      <span>© 2025 socials</span>
+      <a href="#">PRIVACY</a>
+      <a href="#">TERMS</a>
+      <a href="#">PRESS_KIT</a>
+    </div>
+  </main>
+
+  <script>
+    // ============================================================
+    //  ✏️  EDIT YOUR SOCIAL LINKS HERE — ONLY PLACE YOU NEED TO CHANGE
+    // ============================================================
+    const SOCIALS = [
+      {
+        key: "instagram",
+        name: "Instagram",
+        handle: "@social.creators",              // ← change to your handle
+        url: "https://instagram.com/arxchiii_en?obrf=bnMwbm02aDM0dDNo", // ← change to your URL
+        icon: "fab fa-instagram"
+      },
+      {
+        key: "twitter",
+        name: "Twitter / X",
+        handle: "@social_handle",
+        url: "https://x.com/social_handle",
+        icon: "fab fa-twitter"
+      },
+      {
+        key: "linkedin",
+        name: "LinkedIn",
+        handle: "/company/socials",
+        url: "https://linkedin.com/company/socials",
+        icon: "fab fa-linkedin-in"
+      },
+      {
+        key: "github",
+        name: "GitHub",
+        handle: "@socialhub",
+        url: "https://github.com/socialhub",
+        icon: "fab fa-github"
+      },
+      {
+        key: "youtube",
+        name: "YouTube",
+        handle: "@socialvideos",
+        url: "https://youtube.com/@socialvideos",
+        icon: "fab fa-youtube"
+      },
+      {
+        key: "tiktok",
+        name: "TikTok",
+        handle: "@social.tiktok",
+        url: "https://www.tiktok.com/@archie_zz_?is_from_webapp=1&sender_device=pc",
+        icon: "fab fa-tiktok"
+      }
+    ];
+
+    // email config — change this too
+    const EMAIL = {
+      address: "suoskie24@gmail.com",     // ← change to your email
+      url: "mailto:suoskie24@gmail.com"   // ← change to mailto:youremail
+    };
+
+    // ============================================================
+    //  DO NOT EDIT BELOW — this just renders the config above
+    // ============================================================
+
+    // 1. Build social cards
+    const socialGrid = document.getElementById("socialGrid");
+    SOCIALS.forEach(social => {
+      const card = document.createElement("a");
+      card.href = social.url;
+      card.className = `social-card ${social.key}`;
+      card.target = "_blank";
+      card.rel = "noopener noreferrer";
+      card.innerHTML = `
+        <div class="social-icon">
+          <i class="${social.icon}"></i>
+        </div>
+        <span class="social-name">${social.name}</span>
+        <span class="social-handle">${social.handle}</span>
+      `;
+      socialGrid.appendChild(card);
+    });
+
+    // 2. Update email button
+    const emailBtn = document.getElementById("emailBtn");
+    const emailText = document.getElementById("emailText");
+    emailBtn.href = EMAIL.url;
+    emailText.textContent = EMAIL.address;
+  </script>
+</body>
+</html>
